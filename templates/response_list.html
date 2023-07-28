@@ -1,0 +1,40 @@
+{% extends 'flatpages/base.html' %}
+
+{% block title %}
+Все комментарии к посту {{post.post_name}}
+{% endblock title %}
+
+{% block content %}
+   <h1>Все комментарии к посту {{post.post_name}}</h1>
+
+
+   <hr>
+   {% if responses %}
+    <h2>{{responses|length}}</h2>
+       <table>
+           <tr>
+               <td><h2>Автор коммента</h2></td>
+               <td><h2>Дата</h2></td>
+               <td><h2>Текст</h2></td>
+               <td><h2>Автор поста</h2></td>
+               <td><h2>Детальный просмотр комментария</h2></td>
+
+           </tr>
+
+           {% for response in responses %}
+           <tr>
+               <td>{{ response.user }}</td>
+               <td>{{ response.resp_date| date:'DATETIME_FORMAT' }}</td>
+               <td>{{ response.text|truncatechars:50 }}</td>
+               <td>{{ author.name }}</td>
+               <td><a href="/posts/all_responses/{{response.id}}">Ссылка</a></td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Комментариев нет!</h2>
+   {% endif %}
+
+{% endblock content %}

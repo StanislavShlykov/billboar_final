@@ -1,0 +1,59 @@
+{% extends 'flatpages/base.html' %}
+
+{% block title %}
+Все комментарии к посту {{post.post_name}}
+{% endblock title %}
+
+{% block content %}
+   <h1>Все комментарии </h1>
+
+
+   <hr>
+   {% if response_list %}
+    <h2>{{response_list|length}}</h2>
+       <table>
+           <tr>
+               <td><h2>Автор коммента</h2></td>
+               <td><h2>Дата</h2></td>
+               <td><h2>Текст</h2></td>
+               <td><h2>Автор поста</h2></td>
+               <td><h2>Ссылка на пост</h2></td>
+
+           </tr>
+
+           {% for response in response_list %}
+           <tr>
+               <td>{{ response.user }}</td>
+               <td>{{ response.resp_date| date:'DATETIME_FORMAT' }}</td>
+               <td><a href="/posts/all_responses/{{response.id}}">{{ response.text|truncatechars:50 }}</a></td>
+               <td>{{ response.post.author.name }}</td>
+               <td><a href="/posts/{{response.post.id}}">{{ response.post.post_name }}</a></td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Комментариев нет!</h2>
+   {% endif %}
+
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+{% endblock content %}

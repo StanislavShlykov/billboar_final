@@ -1,0 +1,57 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/base.html' %}
+{% load static %}
+
+{% block title %}
+НОВОСТИ
+{% endblock title %}
+
+{% block content %}
+<h1>{{ post.post_name}}</h1>
+<h2> Автор {{ post.author.name}}</h2>
+{{ post.time_in | date:"DATETIME_FORMAT"}} <br>
+{% for category in post.category.values %}
+    {{ category.cat_name }} <br>
+{%endfor%}
+{{ post.post_text}} <br>
+<br>
+{%if post.file%}
+<img src="{{ post.file.url }}"  width='350' height='150' class='mr-3'>
+{%endif%}
+<br>
+
+<form action="{{post.id}}/response/">
+    <button type="submit"> Оставить комментарий</button>
+</form>
+
+<form action="{{post.id}}/all_responses/">
+    <button type="submit"> Посмотреть все комментарии</button>
+</form>
+
+<br>
+<br>
+{% for category in post.category.values %}
+
+<form method="GET" name="callback" action="sign_me/">
+    {% csrf_token %}
+  <input type="hidden" name="category" value="{{ category.cat_name }}">
+  <button type="submit" name="Подписаться"> Подписаться на новости  по теме {{ category.cat_name }}!</button>
+     <br>
+</form>
+
+<!--<button> value="{{ el.id }}" Подписаться на новости  по теме {{ category.cat_name }}!</a> </button>-->
+<!--<button type="submit" name="Подписаться" value="{{ category }}"><a href="sign_me/">Подписаться на новости  по теме {{ category.cat_name }}!</a></button>-->
+<!--<button> name="Подписаться" value="{{ category }}"<a href="sign_me/">Подписаться на новости  по теме {{ category.cat_name }}!</a> </button><a href="sign_me/">-->
+{%endfor%}
+<br>
+<br>
+<br>
+{%if post.author == user%}
+<form action="{{post.id}}/update/">
+    <button type="submit"> Изменить пост</button>
+</form>
+<form action="{{post.id}}/delete/">
+    <button type="submit"> Удалить пост</button>
+</form>
+{%endif%}
+{% endblock content %}

@@ -1,0 +1,66 @@
+{% extends "flatpages/base.html" %}
+{% load custom_tags %}
+
+{% block title %}
+Персональная страничка
+{% endblock title %}
+
+{% block content %}
+<div> Здесь содержится персональная информация пользователя </div>
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<h2>Страница автора {{author.name}}</h2>
+<hr>
+
+
+<hr>
+<hr>
+   {% if filtered_posts %}
+    <h2>{{filtered_posts|length}}</h2>
+       <table>
+           <tr>
+               <td><h2>Название</h2></td>
+               <td><h2>Дата</h2></td>
+               <td><h2>Текст</h2></td>
+               <td><h2>Комментарии к посту</h2></td>
+
+           </tr>
+
+           {% for post in filtered_posts %}
+           <tr>
+               <td><a href="/posts/{{post.id}}">{{ post.post_name }}</a></td>
+               <td>{{ post.time_in| date:'DATETIME_FORMAT' }}</td>
+               <td>{{ post.post_text|truncatechars:20 }}</td>
+
+               <td><a href="/posts/{{post.id}}/all_responses">Открыть</a></td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2> Вы еще не написали ни одной статьи!</h2>
+   {% endif %}
+<div class="pagination">
+    <span class="step-links">
+        {% if articles_page.has_previous %}
+            <a href="{% querystring 'page' 1 filter_params %}">&laquo; первая</a>
+            <a href="{% querystring 'page' articles_page.previous_page_number filter_params %}">предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ articles_page.number }} из {{ articles_page.paginator.num_pages }}.
+        </span>
+
+        {% if articles_page.has_next %}
+            <a href="{% querystring 'page' articles_page.next_page_number filter_params %}">следующая</a>
+            <a href="{% querystring 'page' articles_page.paginator.num_pages filter_params %}">последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+<hr>
+<hr>
+<hr>
+
+
+<button> <a href="sign/logout/">Выйти</a> </button>
+{% endblock content %}

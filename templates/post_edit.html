@@ -1,0 +1,21 @@
+{% extends 'flatpages/base.html' %}
+
+
+{% block title %}
+Создание  новости
+{% endblock title %}
+
+
+{% block content %}
+<h1>Статья</h1>
+<hr>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Save" />
+
+
+</form>
+
+
+{% endblock content %}

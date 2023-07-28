@@ -1,0 +1,35 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/base.html' %}
+
+{% block title %}
+НОВОСТИ
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Комментарий к посту {{ response.post.post_name}}</h1>
+ от {{ response.post.time_in | date:"DATETIME_FORMAT"}} <br>
+{% for category in post.category.values %}
+    {{ category.cat_name }} <br>
+{%endfor%}
+<h2> {{ response.text}} </h2><br>
+<br>
+<br>
+
+<br>
+<br>
+<br>
+{%if response.user == user%}
+<form action="{{response.post.id}}/update/">
+    <button type="submit"> Изменить комментарий</button>
+</form>
+{%endif%}
+{%if response.post.author == user%}
+<form action="{{response.id}}/like/">
+    <button type="submit"> Лайкнуть комментарий</button>
+</form>
+<form action="{{response.id}}/delete/">
+    <button type="submit"> Удалить комментарий</button>
+</form>
+{%endif%}
+{% endblock content %}

@@ -1,0 +1,14 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/base.html' %}
+
+{% block title %}
+LIKE
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>Вы лайкнули пост {{ response.post.post_name}}</h1>
+ от {{ response.post.time_in | date:"DATETIME_FORMAT"}} <br>
+
+
+{% endblock content %}
